@@ -1,4 +1,4 @@
-const { exec } = require('child_process');
+const { execFile } = require('child_process');
 const fs = require('fs');
 const axios = require('axios');
 const core = require('@actions/core');
@@ -47,8 +47,8 @@ async function run() {
 
     console.log('\x1b[33m%s\x1b[0m', 'Working directory: ', workingDirectory || '');
 
-    exec(`git for-each-ref --sort=-refname --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/${tagPattern}"`, {cwd: workingDirectory}, (err, tag, stderr) => {
-        tag = tag.trim();
+    execFile('git', ['for-each-ref', '--sort=-refname', '--sort=-creatordate', '--count', '1', '--format=%(refname:short)', `refs/tags/${tagPattern}`], {cwd: workingDirectory}, (err, tag, stderr) => {
+        tag = tag.trim().replace(/[\r\n]/g, '');
 
         if (err) {
             console.log('\x1b[33m%s\x1b[0m', 'Could not find any tags because: ');
@@ -59,12 +59,12 @@ async function run() {
             console.log('\x1b[33m%s\x1b[0m', 'Falling back to default tag');
             console.log('\x1b[32m%s\x1b[0m', `Found tag: ${process.env.INPUT_FALLBACK}`);
             console.log('\x1b[32m%s\x1b[0m', `Found timestamp: ${timestamp}`);
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, `tag=${process.env.INPUT_FALLBACK}\n`);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `tag=${String(process.env.INPUT_FALLBACK).replace(/[\r\n]/g, '')}\n`);
             fs.appendFileSync(process.env.GITHUB_OUTPUT, `timestamp=${timestamp}\n`);
             process.exit(0);
         }
 
-        exec(`git log -1 --format=%at ${tag}`, {cwd: workingDirectory}, (err, timestamp, stderr) => {
+        execFile('git', ['log', '-1', '--format=%at', tag], {cwd: workingDirectory}, (err, timestamp, stderr) => {
             if (err) {
                 console.log('\x1b[33m%s\x1b[0m', 'Could not find any timestamp because: ');
                 console.log('\x1b[31m%s\x1b[0m', stderr);
