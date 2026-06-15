@@ -13,10 +13,15 @@ jobs:
         os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-latest"]') || fromJSON('["ubuntu-latest","windows-latest","macos-latest"]') }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           repository: repository-situations/same-day-git-tag
           ref: main
@@ -33,7 +38,7 @@ jobs:
           test -n "${{ steps.previoustag.outputs.tag }}"
           test -n "${{ steps.previoustag.outputs.timestamp }}"
       - name: Assert we got the tag
-        uses: therussiankid92/gat@v1
+        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
           assertion: should.equal
           expected: v1.0.1
@@ -46,10 +51,15 @@ jobs:
         os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-latest"]') || fromJSON('["ubuntu-latest","windows-latest","macos-latest"]') }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           repository: step-security/action-markdownlint
           ref: main
@@ -66,7 +76,7 @@ jobs:
           test -n "${{ steps.previoustag.outputs.tag }}"
           test -n "${{ steps.previoustag.outputs.timestamp }}"
       - name: Assert we got the tag
-        uses: therussiankid92/gat@v1
+        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
           assertion: should.equal
           expected: v0.26.8
@@ -88,7 +98,7 @@ jobs:
         run: |
           rm -r .git/refs/tags
       - name: Assert we got the tag with the expected prefix
-        uses: therussiankid92/gat@v1
+        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
           assertion: should.equal
           expected: tag-with-prefix-v1.0.0
@@ -104,7 +114,7 @@ jobs:
           test -n "${{ steps.previoustagwithfallback.outputs.tag }}"
           test -n "${{ steps.previoustagwithfallback.outputs.timestamp }}"
       - name: Assert we got the fallback
-        uses: therussiankid92/gat@v1
+        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
           assertion: should.equal
           expected: v1.0.0
@@ -122,10 +132,15 @@ jobs:
         os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-latest"]') || fromJSON('["ubuntu-latest","windows-latest","macos-latest"]') }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           repository: repository-situations/github-action-with-x.y-and-x-tags-referring-to-x.y.z-tags-commit
           ref: main
@@ -143,7 +158,7 @@ jobs:
           test -n "${{ steps.previoustag.outputs.tag }}"
           test -n "${{ steps.previoustag.outputs.timestamp }}"
       - name: Assert we got the tag
-        uses: therussiankid92/gat@v1
+        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
           assertion: should.equal
           expected: ${{ matrix.expectedTag }}
@@ -156,10 +171,15 @@ jobs:
         os: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-latest"]') || fromJSON('["ubuntu-latest","windows-latest","macos-latest"]') }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           repository: repository-situations/project-with-monotonicly-increasing-integer-as-version
           ref: main
@@ -177,7 +197,7 @@ jobs:
           test -n "${{ steps.previoustag.outputs.tag }}"
           test -n "${{ steps.previoustag.outputs.timestamp }}"
       - name: Assert we got the tag
-        uses: therussiankid92/gat@v1
+        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
           assertion: should.equal
           expected: r1
