@@ -1,0 +1,16 @@
+{
+  "name": "github-action-get-previous-tag",
+  "version": "2.0.0",
+  "description": "Get the latest tag from git and outputs that for use in other actions",
+  "main": "main.js",
+  "scripts": {
+    "build": "ncc build main.js -o dist/"
+  },
+  "dependencies": {
+    "@actions/core": "^2.0.1",
+    "axios": "^1.17.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.44.0"
+  }
+}
