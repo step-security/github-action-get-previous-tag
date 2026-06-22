@@ -107,7 +107,7 @@ jobs:
         id: previoustagwithfallback
         uses: ./
         with:
-          fallback: v1.0.0
+          fallback: v2.0.0
       - run: |
           echo "Tag: ${{ steps.previoustagwithfallback.outputs.tag }}"
           echo "Timestamp: ${{ steps.previoustagwithfallback.outputs.timestamp }}"
@@ -117,7 +117,7 @@ jobs:
         uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
           assertion: should.equal
-          expected: v1.0.0
+          expected: v2.0.0
           actual: ${{ steps.previoustagwithfallback.outputs.tag }}
   get-previous-tag-on-github-action-with-expected-order:
     name: Test Get Previous Tag on ${{ matrix.os }} against GitHub Action for expected order of tags (${{ toJSON(matrix) }})
