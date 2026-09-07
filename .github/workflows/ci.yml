@@ -79,7 +79,7 @@ jobs:
         uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
           assertion: should.equal
-          expected: v0.26.8
+          expected: v0.28.0
           actual: ${{ steps.previoustag.outputs.tag }}
       - name: Add tag with prefix
         run: |
