@@ -40,7 +40,6 @@ jobs:
       - name: Assert we got the tag
         uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
-          assertion: should.equal
           expected: v1.0.1
           actual: ${{ steps.previoustag.outputs.tag }}
   get-previous-tag:
@@ -100,7 +99,6 @@ jobs:
       - name: Assert we got the tag with the expected prefix
         uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
-          assertion: should.equal
           expected: tag-with-prefix-v1.0.0
           actual: ${{ steps.previoustagwithprefix.outputs.tag }}
       - name: 'Get Previous tag with fallback'
@@ -119,6 +117,15 @@ jobs:
           assertion: should.equal
           expected: v2.0.0
           actual: ${{ steps.previoustagwithfallback.outputs.tag }}
+      - name: 'Get Previous tag without fallback'
+        id: previoustagwithoutfallback
+        uses: ./
+        continue-on-error: true
+      - name: Assert action failed without fallback
+        uses: nick-fields/assert-action@0efd6166067d9c59d89c710fab4f79fb066f8985 # v4.0.1
+        with:
+          expected: failure
+          actual: ${{ steps.previoustagwithoutfallback.outcome }}
   get-previous-tag-on-github-action-with-expected-order:
     name: Test Get Previous Tag on ${{ matrix.os }} against GitHub Action for expected order of tags (${{ toJSON(matrix) }})
     strategy:
@@ -160,7 +167,6 @@ jobs:
       - name: Assert we got the tag
         uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
-          assertion: should.equal
           expected: ${{ matrix.expectedTag }}
           actual: ${{ steps.previoustag.outputs.tag }}
   monotonic-release-tag:
@@ -199,6 +205,5 @@ jobs:
       - name: Assert we got the tag
         uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
         with:
-          assertion: should.equal
           expected: r1
           actual: ${{ steps.previoustag.outputs.tag }}

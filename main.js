@@ -11,6 +11,7 @@ async function validateSubscription() {
     repoPrivate = payload?.repository?.private;
   }
 
+<<<<<<< aafffe57a3dc9c6dc48bfbda9395a71863d97160
   const upstream = 'wyrihaximus/github-action-get-previous-tag';
   const action = process.env.GITHUB_ACTION_REPOSITORY;
   const docsUrl = 'https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions';
@@ -34,6 +35,27 @@ async function validateSubscription() {
       core.error(`\u001b[1;31mThis action requires a StepSecurity subscription for private repositories.\u001b[0m`);
       core.error(`\u001b[31mLearn how to enable a subscription: ${docsUrl}\u001b[0m`);
       process.exit(1);
+=======
+exec(`git for-each-ref --sort=-refname --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/${tagPattern}"`, {cwd: workingDirectory}, (err, tag, stderr) => {
+    tag = tag.trim();
+
+    if (err) {
+        console.log('\x1b[33m%s\x1b[0m', 'Could not find any tags because: ');
+        console.log('\x1b[31m%s\x1b[0m', stderr);
+        process.exit(1);
+    } else if (tag === "") {
+        if (process.env.INPUT_FALLBACK === "") {
+            console.log('\x1b[31m%s\x1b[0m', 'No fallback tag was provided and no tag was found.');
+            process.exit(1);
+        }
+        let timestamp = Math.floor(new Date().getTime() / 1000);
+        console.log('\x1b[33m%s\x1b[0m', 'Falling back to default tag');
+        console.log('\x1b[32m%s\x1b[0m', `Found tag: ${process.env.INPUT_FALLBACK}`);
+        console.log('\x1b[32m%s\x1b[0m', `Found timestamp: ${timestamp}`);
+        fs.appendFileSync(process.env.GITHUB_OUTPUT, `tag=${process.env.INPUT_FALLBACK}\n`);
+        fs.appendFileSync(process.env.GITHUB_OUTPUT, `timestamp=${timestamp}\n`);
+        process.exit(0);
+>>>>>>> 458652da9b49e0d6e154cf4a5d24bae222de2d24
     }
     core.info('Timeout or API not reachable. Continuing to next step.');
   }

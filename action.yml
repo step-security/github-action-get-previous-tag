@@ -1,4 +1,5 @@
 name: Get Latest Tag
+author: step-security
 description: Get the latest tag from git and outputs that for use in other actions
 branding:
   icon: tag
