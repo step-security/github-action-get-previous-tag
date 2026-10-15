@@ -38,9 +38,8 @@ jobs:
           test -n "${{ steps.previoustag.outputs.tag }}"
           test -n "${{ steps.previoustag.outputs.timestamp }}"
       - name: Assert we got the tag
-        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
+        uses: nick-fields/assert-action@0efd6166067d9c59d89c710fab4f79fb066f8985 # v4.0.1
         with:
-          assertion: should.equal
           expected: v1.0.1
           actual: ${{ steps.previoustag.outputs.tag }}
   get-previous-tag:
@@ -59,27 +58,18 @@ jobs:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-        with:
-          repository: step-security/action-markdownlint
-          ref: main
-          path: tmp/action-markdownlint
-          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
       - name: 'Get Previous tag'
         id: previoustag
         uses: ./
-        with:
-          workingDirectory: tmp/action-markdownlint
       - run: |
           echo "Tag: ${{ steps.previoustag.outputs.tag }}"
           echo "Timestamp: ${{ steps.previoustag.outputs.timestamp }}"
           test -n "${{ steps.previoustag.outputs.tag }}"
           test -n "${{ steps.previoustag.outputs.timestamp }}"
       - name: Assert we got the tag
-        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
+        uses: nick-fields/assert-action@0efd6166067d9c59d89c710fab4f79fb066f8985 # v4.0.1
         with:
-          assertion: should.equal
-          expected: v0.28.0
+          expected: v2.0.0
           actual: ${{ steps.previoustag.outputs.tag }}
       - name: Add tag with prefix
         run: |
@@ -98,27 +88,34 @@ jobs:
         run: |
           rm -r .git/refs/tags
       - name: Assert we got the tag with the expected prefix
-        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
+        uses: nick-fields/assert-action@0efd6166067d9c59d89c710fab4f79fb066f8985 # v4.0.1
         with:
-          assertion: should.equal
           expected: tag-with-prefix-v1.0.0
           actual: ${{ steps.previoustagwithprefix.outputs.tag }}
       - name: 'Get Previous tag with fallback'
         id: previoustagwithfallback
         uses: ./
         with:
-          fallback: v2.0.0
+          fallback: v1.0.0
       - run: |
           echo "Tag: ${{ steps.previoustagwithfallback.outputs.tag }}"
           echo "Timestamp: ${{ steps.previoustagwithfallback.outputs.timestamp }}"
           test -n "${{ steps.previoustagwithfallback.outputs.tag }}"
           test -n "${{ steps.previoustagwithfallback.outputs.timestamp }}"
       - name: Assert we got the fallback
-        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
+        uses: nick-fields/assert-action@0efd6166067d9c59d89c710fab4f79fb066f8985 # v4.0.1
         with:
-          assertion: should.equal
-          expected: v2.0.0
+          expected: v1.0.0
           actual: ${{ steps.previoustagwithfallback.outputs.tag }}
+      - name: 'Get Previous tag without fallback'
+        id: previoustagwithoutfallback
+        uses: ./
+        continue-on-error: true
+      - name: Assert action failed without fallback
+        uses: nick-fields/assert-action@0efd6166067d9c59d89c710fab4f79fb066f8985 # v4.0.1
+        with:
+          expected: failure
+          actual: ${{ steps.previoustagwithoutfallback.outcome }}
   get-previous-tag-on-github-action-with-expected-order:
     name: Test Get Previous Tag on ${{ matrix.os }} against GitHub Action for expected order of tags (${{ toJSON(matrix) }})
     strategy:
@@ -158,9 +155,8 @@ jobs:
           test -n "${{ steps.previoustag.outputs.tag }}"
           test -n "${{ steps.previoustag.outputs.timestamp }}"
       - name: Assert we got the tag
-        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
+        uses: nick-fields/assert-action@0efd6166067d9c59d89c710fab4f79fb066f8985 # v4.0.1
         with:
-          assertion: should.equal
           expected: ${{ matrix.expectedTag }}
           actual: ${{ steps.previoustag.outputs.tag }}
   monotonic-release-tag:
@@ -197,8 +193,7 @@ jobs:
           test -n "${{ steps.previoustag.outputs.tag }}"
           test -n "${{ steps.previoustag.outputs.timestamp }}"
       - name: Assert we got the tag
-        uses: therussiankid92/gat@2c6f703798d3b670c6e1128e1f9398d0b2510e08 # v1
+        uses: nick-fields/assert-action@0efd6166067d9c59d89c710fab4f79fb066f8985 # v4.0.1
         with:
-          assertion: should.equal
           expected: r1
           actual: ${{ steps.previoustag.outputs.tag }}
